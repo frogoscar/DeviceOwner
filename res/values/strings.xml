@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Set Device Owner</string>
+    <string name="info">1. Ensure that Android Beam is enabled by turning it on in
+        the system Settings (or press the icon above). 2. Make sure the package
+        name and URL are correct. 3. Press the "Compute Checksum" button. 4. 
+        Place this device up against an Android 5.0+ device that has not been
+        provisioned (a brand new device or one that has just been factory reset).</string>
+    <string name="menu_settings">Android Beam settings</string>
+
+</resources>
