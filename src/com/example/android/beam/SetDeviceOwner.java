@@ -26,6 +26,7 @@ import android.nfc.NfcAdapter.CreateNdefMessageCallback;
 import android.nfc.NfcAdapter.OnNdefPushCompleteCallback;
 import android.nfc.NfcEvent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -45,6 +46,8 @@ import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -67,12 +70,13 @@ public class SetDeviceOwner extends Activity implements
     private NfcAdapter mNfcAdapter;
     private TextView mInfoText, mChecksum;
     private EditText mPackageName, mUrl;
-    private boolean checksumCalculated = false;
+    private EditText mWiFiSSID, mWiFiPassWD, mWiFiSType;
+    private boolean checksumCalculated = true;
 
     private OnEditorActionListener mOnEditorActionListener = new OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            checksumCalculated = false;
+            checksumCalculated = true;
             return false;
         }
     };
@@ -90,6 +94,13 @@ public class SetDeviceOwner extends Activity implements
         mChecksum = (TextView) findViewById(R.id.checksum);
         mUrl = (EditText) findViewById(R.id.url);
         mUrl.setOnEditorActionListener(mOnEditorActionListener);
+        mWiFiSSID = (EditText) findViewById(R.id.wifi_ssid);
+        mWiFiSSID.setOnEditorActionListener(mOnEditorActionListener);
+        mWiFiPassWD = (EditText) findViewById(R.id.wifi_passwd);
+        mWiFiPassWD.setOnEditorActionListener(mOnEditorActionListener);
+        mWiFiSType = (EditText) findViewById(R.id.wifi_S_type);
+        mWiFiSType.setOnEditorActionListener(mOnEditorActionListener);
+
         // Check for available NFC Adapter
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -168,21 +179,54 @@ public class SetDeviceOwner extends Activity implements
             Properties p = new Properties();
 
             p.setProperty(
-                    DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_NAME,
+                    DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_COMPONENT_NAME,
                     mPackageName.getText().toString());
             p.setProperty(
                     DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_DOWNLOAD_LOCATION,
                     mUrl.getText().toString());
             p.setProperty(
-                    DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_PACKAGE_CHECKSUM,
+                    DevicePolicyManager.EXTRA_PROVISIONING_DEVICE_ADMIN_SIGNATURE_CHECKSUM,
                     mChecksum.getText().toString());
+
+//            p.setProperty(
+//                DevicePolicyManager.EXTRA_PROVISIONING_WIFI_SSID,
+//                mWiFiSSID.getText().toString());
+            p.setProperty(
+                DevicePolicyManager.EXTRA_PROVISIONING_WIFI_SSID,
+                "AndroidAP");
+
+//            p.setProperty(
+//                DevicePolicyManager.EXTRA_PROVISIONING_WIFI_PASSWORD,
+//                mWiFiPassWD.getText().toString());
+            p.setProperty(
+                DevicePolicyManager.EXTRA_PROVISIONING_WIFI_PASSWORD,
+                "12345678");
+
+            p.setProperty(
+                DevicePolicyManager.EXTRA_PROVISIONING_WIFI_SECURITY_TYPE,
+                mWiFiSType.getText().toString());
+
+            Log.e(TAG, "mWiFiSSID.getText().toString() " + mWiFiSSID.getText().toString());
+            Log.e(TAG, "mWiFiPassWD.getText().toString() " + mWiFiPassWD.getText().toString());
+            Log.e(TAG, "mWiFiSType.getText().toString() " + mWiFiSType.getText().toString());
+
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            FileOutputStream outputStream = new FileOutputStream(new File(getExternalFilesDir(
+                Environment.DIRECTORY_DOWNLOADS), "CS_bytes.txt"));
+
             OutputStream out = new ObjectOutputStream(bos);
+            OutputStream out2 = new ObjectOutputStream(outputStream);
             p.store(out, "");
+            p.store(out2, "");
             final byte[] bytes = bos.toByteArray();
 
             NdefMessage msg = new NdefMessage(NdefRecord.createMime(
                     DevicePolicyManager.MIME_TYPE_PROVISIONING_NFC, bytes));
+
+            Log.e(TAG, "bytes " + bytes.toString());
+
+            out2.close();
+
             return msg;
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -50,7 +50,7 @@
             android:id="@+id/package_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sdg.example.kiosk_mode"
+            android:text="com.ercom.cryptosmart/com.ercom.cryptosmart.androidsystem.base.AdminPermissionBase$AdminPermissionReceiver"
             android:textSize="16sp" />
 
         <Space
@@ -68,7 +68,7 @@
             android:id="@+id/url"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="http://sdgsystems.net/flong/KioskModeDemo.apk"
+            android:text="http://172.19.0.121/standalone_android/test-csmart.apk"
             android:textSize="16sp" />
 
         <Space
@@ -86,9 +86,10 @@
             android:id="@+id/checksum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="kfCkS_Xng7B_LlsvtnIqZyKcT8f3KmaXcSY1QeoPhA4="
             android:textSize="16sp" />
 
+        <!--
         <Space
             android:layout_width="0dp"
             android:layout_height="10dp"
@@ -101,6 +102,66 @@
             android:layout_gravity="center_horizontal"
             android:onClick="computeChecksum"
             android:text="Compute Checksum" />
+        -->
+
+        <Space
+          android:layout_width="0dp"
+          android:layout_height="10dp"
+          android:layout_weight="1" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="WiFi SSID:"
+          android:textSize="16sp" />
+
+        <EditText
+          android:id="@+id/wifi_ssid"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Cryptosmart_RD"
+          android:textSize="16sp" />
+
+        <Space
+          android:layout_width="0dp"
+          android:layout_height="10dp"
+          android:layout_weight="1" />
+
+        <Space
+          android:layout_width="0dp"
+          android:layout_height="10dp"
+          android:layout_weight="1" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="WiFi Password:"
+          android:textSize="16sp" />
+
+        <EditText
+          android:id="@+id/wifi_passwd"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Ilestpratiquececodewifi!"
+          android:textSize="16sp" />
+
+        <Space
+          android:layout_width="0dp"
+          android:layout_height="10dp"
+          android:layout_weight="1" />
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="WiFi Security Type:"
+          android:textSize="16sp" />
+
+        <EditText
+          android:id="@+id/wifi_S_type"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="WPA"
+          android:textSize="16sp" />
     </LinearLayout>
 
 </ScrollView>
